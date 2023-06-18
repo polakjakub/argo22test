@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+ web:
+  image: wordpress
+  volumes:
+    - ./src:/var/www/html
+  links:
+   - mysql
+  environment:
+   WORDPRESS_DB_HOST: mysql
+   WORDPRESS_DB_USER: dev
+   WORDPRESS_DB_PASSWORD: devxxx
+   WORDPRESS_DB_NAME: wordpress
+   WORDPRESS_DEBUG: 'true'
+  ports:
+   - "8088:80"
+ mysql:
+  image: mysql:5.7
+  environment:
+   MYSQL_DATABASE: wordpress
+   MYSQL_USER: dev
+   MYSQL_PASSWORD: devxxx
+   MYSQL_RANDOM_ROOT_PASSWORD: '1'
+  volumes:
+   - db:/var/lib/mysql
+ adminer:
+  container_name: a22test_adminer
+  image: dockette/adminer:mysql
+  restart: always
+  ports:
+   - 8089:80
+  environment:
+   - MEMORY=512M
+   - UPLOAD=4096M
+  depends_on:
+   - mysql
+  links:
+   - mysql
+
+volumes:
+ web:
+ db:
