@@ -52,6 +52,9 @@ class testargo22
             'date_format' => 'F j, Y',
             'from_date' => null,
             'to_date' => null,
+            'meta_key' => 'date_at',
+            'orderby' => 'meta_value',
+            'order' => 'DESC'
         ), $atts);
 
 
@@ -92,7 +95,7 @@ class testargo22
         $output = '<table>';
         $output .= '<thead><tr><th>Datum</th><th>Název</th><th>Lokalita</th></tr></thead>';
         foreach ($events as $event) {
-            $date = wp_date($date_format, strtotime($event->post_date));
+            $date = wp_date($date_format, strtotime($event->date_at));
             $output .= "<tr><td>{$date}</td><td>{$event->post_title}</td><td>{$event->location}</td><td>{}</td></tr>\n";
 
         }
@@ -105,7 +108,7 @@ class testargo22
     {
         $output = '<div class="event-listing">';
         foreach ($events as $event) {
-            $date = wp_date($date_format, strtotime($event->post_date));
+            $date = wp_date($date_format, strtotime($event->date_at));
             $output .= '<div class="event">';
             $output .= '<h3>' . $event->post_title . '</h3>';
             $output .= '<p>Datum: ' . $date . '</p>';
@@ -147,3 +150,8 @@ class testargo22
 
 
 add_shortcode(TESTARGO22_SHORTCODE, ['testargo22', 'eventsShortcode']);
+
+if ( is_admin() ) {
+    require __DIR__ . '/admin.php';
+    testargo22Admin::init();
+}
