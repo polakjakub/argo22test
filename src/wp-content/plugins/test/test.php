@@ -47,9 +47,10 @@ class testargo22
 
     public static function eventsShortcode($atts)
     {
+        $options = get_option('testargo22_options');
         $attributes = shortcode_atts(array(
-            'format' => 'tiles',
-            'date_format' => 'F j, Y',
+            'format' => $options["testargo22_field_display"],
+            'date_format' => $options["testargo22_field_date_format"],
             'from_date' => null,
             'to_date' => null,
             'meta_key' => 'date_at',
